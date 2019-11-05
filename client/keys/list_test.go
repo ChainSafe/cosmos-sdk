@@ -17,7 +17,7 @@ func Test_runListCmd(t *testing.T) {
 		args []string
 	}
 
-	cmdBasic := listKeysCmd()
+	cmdBasic := ListKeysCmd()
 
 	// Prepare some keybases
 	kbHome1, cleanUp1 := tests.NewTestCaseDir(t)

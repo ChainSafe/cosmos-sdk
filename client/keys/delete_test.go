@@ -14,7 +14,7 @@ import (
 )
 
 func Test_runDeleteCmd(t *testing.T) {
-	deleteKeyCommand := deleteKeyCommand()
+	deleteKeyCommand := DeleteKeyCommand()
 
 	yesF, _ := deleteKeyCommand.Flags().GetBool(flagYes)
 	forceF, _ := deleteKeyCommand.Flags().GetBool(flagForce)

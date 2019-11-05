@@ -14,7 +14,7 @@ import (
 )
 
 func Test_runImportCmd(t *testing.T) {
-	importKeyCommand := importKeyCommand()
+	importKeyCommand := ImportKeyCommand()
 
 	// Now add a temporary keybase
 	kbHome, cleanUp := tests.NewTestCaseDir(t)

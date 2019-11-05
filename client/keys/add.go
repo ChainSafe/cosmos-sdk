@@ -36,7 +36,7 @@ const (
 	DefaultKeyPass = "12345678"
 )
 
-func addKeyCommand() *cobra.Command {
+func AddKeyCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "add <name>",
 		Short: "Add an encrypted private key (either newly generated or recovered), encrypt it, and save to disk",
@@ -75,6 +75,23 @@ the flag --nosort is set.
 	return cmd
 }
 
+func getKeybase(dryrun bool) (keys.Keybase, error) {
+	if dryrun {
+		return keys.NewInMemory(), nil
+	}
+
+	return NewKeyBaseFromHomeFlag()
+}
+
+func runAddCmd(cmd *cobra.Command, args []string) error {
+	kb, err := getKeybase(viper.GetBool(flagDryRun))
+	if err != nil {
+		return err
+	}
+
+	return RunAddCmd(cmd, args, kb)
+}
+
 /*
 input
 	- bip39 mnemonic
@@ -84,8 +101,7 @@ input
 output
 	- armor encrypted private key (saved to file)
 */
-func runAddCmd(cmd *cobra.Command, args []string) error {
-	var kb keys.Keybase
+func RunAddCmd(cmd *cobra.Command, args []string, kb keys.Keybase) error {
 	var err error
 	var encryptPassword string
 
@@ -98,14 +114,8 @@ func runAddCmd(cmd *cobra.Command, args []string) error {
 	if viper.GetBool(flagDryRun) {
 		// we throw this away, so don't enforce args,
 		// we want to get a new random seed phrase quickly
-		kb = keys.NewInMemory()
 		encryptPassword = DefaultKeyPass
 	} else {
-		kb, err = NewKeyBaseFromHomeFlag()
-		if err != nil {
-			return err
-		}
-
 		_, err = kb.Get(name)
 		if err == nil {
 			// account exists, ask for user confirmation
@@ -285,9 +295,9 @@ func printCreate(cmd *cobra.Command, info keys.Info, showMnemonic bool, mnemonic
 
 		var jsonString []byte
 		if viper.GetBool(flags.FlagIndentResponse) {
-			jsonString, err = cdc.MarshalJSONIndent(out, "", "  ")
+			jsonString, err = KeysCdc.MarshalJSONIndent(out, "", "  ")
 		} else {
-			jsonString, err = cdc.MarshalJSON(out)
+			jsonString, err = KeysCdc.MarshalJSON(out)
 		}
 
 		if err != nil {

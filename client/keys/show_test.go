@@ -28,14 +28,14 @@ func Test_multiSigKey_Properties(t *testing.T) {
 }
 
 func Test_showKeysCmd(t *testing.T) {
-	cmd := showKeysCmd()
+	cmd := ShowKeysCmd()
 	assert.NotNil(t, cmd)
 	assert.Equal(t, "false", cmd.Flag(FlagAddress).DefValue)
 	assert.Equal(t, "false", cmd.Flag(FlagPublicKey).DefValue)
 }
 
 func Test_runShowCmd(t *testing.T) {
-	cmd := showKeysCmd()
+	cmd := ShowKeysCmd()
 
 	err := runShowCmd(cmd, []string{"invalid"})
 	assert.EqualError(t, err, "Key invalid not found")
