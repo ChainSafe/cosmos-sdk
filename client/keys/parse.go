@@ -125,9 +125,9 @@ func displayParseKeyInfo(stringer fmt.Stringer) {
 	case OutputFormatJSON:
 
 		if viper.GetBool(flags.FlagIndentResponse) {
-			out, err = KeysCdc.MarshalJSONIndent(stringer, "", "  ")
+			out, err = cdc.MarshalJSONIndent(stringer, "", "  ")
 		} else {
-			out = KeysCdc.MustMarshalJSON(stringer)
+			out = cdc.MustMarshalJSON(stringer)
 		}
 
 	}

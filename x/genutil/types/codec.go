@@ -18,5 +18,10 @@ func init() {
 	authtypes.RegisterCodec(ModuleCdc)
 	sdk.RegisterCodec(ModuleCdc)
 	codec.RegisterCrypto(ModuleCdc)
-	ModuleCdc.Seal()
+}
+
+// RegisterKeyTypeCodec registers an external account type defined in
+// another module for the internal ModuleCdc.
+func RegisterKeyTypeCodec(o interface{}, name string) {
+	ModuleCdc.RegisterConcrete(o, name, nil)
 }

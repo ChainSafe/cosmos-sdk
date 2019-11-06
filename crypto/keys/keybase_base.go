@@ -24,7 +24,7 @@ type (
 	}
 
 	// KeybaseOption overrides options for the db
-	KeybaseOption func(*kbOptions)
+	KeybaseOption = func(*kbOptions)
 
 	// baseKeybase is an auxiliary type that groups Keybase storage agnostic features
 	// together.
@@ -107,7 +107,7 @@ func (kb baseKeybase) DecodeSignature(info Info, msg []byte) (sig []byte, pub tm
 		return nil, nil, err
 	}
 
-	if err := CryptoCdc.UnmarshalBinaryLengthPrefixed([]byte(signed), sig); err != nil {
+	if err := cdc.UnmarshalBinaryLengthPrefixed([]byte(signed), sig); err != nil {
 		return nil, nil, errors.Wrap(err, "failed to decode signature")
 	}
 

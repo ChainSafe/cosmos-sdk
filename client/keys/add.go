@@ -296,9 +296,9 @@ func printCreate(cmd *cobra.Command, info keys.Info, showMnemonic bool, mnemonic
 
 		var jsonString []byte
 		if viper.GetBool(flags.FlagIndentResponse) {
-			jsonString, err = KeysCdc.MarshalJSONIndent(out, "", "  ")
+			jsonString, err = cdc.MarshalJSONIndent(out, "", "  ")
 		} else {
-			jsonString, err = KeysCdc.MarshalJSON(out)
+			jsonString, err = cdc.MarshalJSON(out)
 		}
 
 		if err != nil {

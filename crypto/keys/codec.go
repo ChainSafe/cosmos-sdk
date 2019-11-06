@@ -7,14 +7,20 @@ import (
 	"github.com/cosmos/cosmos-sdk/crypto/keys/hd"
 )
 
-// CryptoCdc defines the codec required for keys and info
-var CryptoCdc *codec.Codec
+// cdc defines the codec required for keys and info
+var cdc *codec.Codec
 
 func init() {
-	CryptoCdc = codec.New()
-	cryptoAmino.RegisterAmino(CryptoCdc)
-	RegisterCodec(CryptoCdc)
-	CryptoCdc.Seal()
+	cdc = codec.New()
+	cryptoAmino.RegisterAmino(cdc)
+	RegisterCodec(cdc)
+	// cdc.Seal()
+}
+
+// RegisterKeyTypeCodec registers an external account type defined in
+// another module for the internal ModuleCdc.
+func RegisterKeyTypeCodec(o interface{}, name string) {
+	cdc.RegisterConcrete(o, name, nil)
 }
 
 // RegisterCodec registers concrete types and interfaces on the given codec.
