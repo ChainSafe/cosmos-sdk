@@ -17,6 +17,7 @@ const (
 	flagForce = "force"
 )
 
+// DeleteKeyCommand deletes a key from the keybase
 func DeleteKeyCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "delete <name>",
