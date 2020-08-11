@@ -173,7 +173,7 @@ func StdDeriveKey(mnemonic string, bip39Passphrase, hdPath string, algo SigningA
 	if algo == Secp256k1 {
 		return SecpDeriveKey(mnemonic, bip39Passphrase, hdPath)
 	}
-	return nil, ErrUnsupportedSigningAlgo
+	return nil, errors.Wrapf(ErrUnsupportedSigningAlgo, "cannot derive key; algos supported %s, got %s", Secp256k1, algo)
 }
 
 // SecpDeriveKey derives and returns the secp256k1 private key for the given seed and HD path.
