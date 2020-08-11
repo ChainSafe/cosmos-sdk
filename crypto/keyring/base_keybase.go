@@ -58,7 +58,7 @@ func StdPrivKeyGen(bz []byte, algo SigningAlgo) (tmcrypto.PrivKey, error) {
 	if algo == Secp256k1 {
 		return SecpPrivKeyGen(bz), nil
 	}
-	return nil, ErrUnsupportedSigningAlgo
+	return nil, errors.Wrapf(ErrUnsupportedSigningAlgo, "cannot generate privkey; algo supported %s, got %s", Secp256k1, algo)
 }
 
 // SecpPrivKeyGen generates a secp256k1 private key from the given bytes
@@ -102,7 +102,7 @@ func (kb baseKeybase) CreateLedger(
 ) (Info, error) {
 
 	if !IsSupportedAlgorithm(kb.SupportedAlgosLedger(), algo) {
-		return nil, ErrUnsupportedSigningAlgo
+		return nil, errors.Wrapf(ErrUnsupportedSigningAlgo, "cannot create ledger; ledger algos supported %v, got %s", kb.SupportedAlgosLedger(), algo)
 	}
 
 	coinType := types.GetConfig().GetCoinType()
@@ -126,7 +126,7 @@ func (kb baseKeybase) CreateMnemonic(
 	}
 
 	if !IsSupportedAlgorithm(kb.SupportedAlgos(), algo) {
-		return nil, "", ErrUnsupportedSigningAlgo
+		return nil, "", errors.Wrapf(ErrUnsupportedSigningAlgo, "cannot create mnemonic; algo supported %v, got %s", kb.SupportedAlgos(), algo)
 	}
 
 	// Default number of words (24): This generates a mnemonic directly from the

@@ -3,10 +3,11 @@ package keys
 import (
 	"bufio"
 	"bytes"
-	"errors"
 	"fmt"
 	"io"
 	"sort"
+
+	"github.com/pkg/errors"
 
 	bip39 "github.com/cosmos/go-bip39"
 
@@ -120,7 +121,7 @@ func RunAddCmd(cmd *cobra.Command, args []string, kb keyring.Keybase, inBuf *buf
 		algo = keyring.Secp256k1
 	}
 	if !keyring.IsSupportedAlgorithm(kb.SupportedAlgos(), algo) {
-		return keyring.ErrUnsupportedSigningAlgo
+		return errors.Wrapf(keyring.ErrUnsupportedSigningAlgo, "cannot run cmd; algos supported %v, got %s", kb.SupportedAlgos(), algo)
 	}
 
 	if !viper.GetBool(flags.FlagDryRun) {
@@ -202,7 +203,7 @@ func RunAddCmd(cmd *cobra.Command, args []string, kb keyring.Keybase, inBuf *buf
 		}
 
 		if !keyring.IsSupportedAlgorithm(kb.SupportedAlgosLedger(), algo) {
-			return keyring.ErrUnsupportedSigningAlgo
+			return errors.Wrapf(keyring.ErrUnsupportedSigningAlgo, "cannot run cmd; ledger algos supported %v, got %s", kb.SupportedAlgosLedger(), algo)
 		}
 
 		bech32PrefixAccAddr := sdk.GetConfig().GetBech32AccountAddrPrefix()
