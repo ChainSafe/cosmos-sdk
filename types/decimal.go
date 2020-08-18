@@ -209,6 +209,9 @@ func (d Dec) Abs() Dec          { return Dec{new(big.Int).Abs(d.i)} } // absolut
 
 // BigInt returns a copy of the underlying big.Int.
 func (d Dec) BigInt() *big.Int {
+	if d.IsNil() {
+		return nil
+	}
 	copy := new(big.Int)
 	return copy.Set(d.i)
 }
